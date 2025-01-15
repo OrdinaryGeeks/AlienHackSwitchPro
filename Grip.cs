@@ -49,7 +49,6 @@ public class Grip : MonoBehaviour
         {
             if (other.CompareTag("EnemyWeapon"))
             {
-                Debug.Log("Successful hit");
               
                 {
                     if(!isBlocking)
@@ -86,20 +85,21 @@ public class Grip : MonoBehaviour
     {
         
    
-        Debug.Log("Register Hit");
 
         if(other.TryGetComponent<alienCop>(out alienCop cop))
         {
-            Debug.Log("Hit a cop");
 
             cop.health -= 10;
+        }
+        else if(other.TryGetComponent<Finch>(out Finch finch))
+        {
+            finch.health -= 10;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isBlocking);
         float spriteWidth = health / 100.0f;
         
 
@@ -130,13 +130,7 @@ public class Grip : MonoBehaviour
         if (Mathf.Abs(moveValue.x) > 0 || Mathf.Abs(moveValue.y) > 0)
         {
             anim.SetBool("isRun", true);
-            //float   angle = Mathf.Atan2(moveValue.x, moveValue.y) * Mathf.Rad2Deg;
-
-
-            //if (GameEngine.camIndex == 0)
-
             float timeDilation = Time.deltaTime * 100;
-          //  Debug.Log(timeDilation);
 
             if (timeDilation > .4f)
                 timeDilation = .4f;
@@ -221,14 +215,12 @@ public class Grip : MonoBehaviour
             if (anim.GetCurrentAnimatorClipInfo(0).Length > 0)
                 if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "ShieldBlock" && anim.GetCurrentAnimatorStateInfo(0).normalizedTime>.8f)
             {
-                Debug.Log("Setting block to true");
                 anim.speed = 0; 
             }
 
         }
         else
         {
-            Debug.Log("Setting block to false");
             anim.SetBool("isShieldBlock", false);
             anim.speed = 1;
             isBlocking = false;

@@ -9,6 +9,8 @@ public class Godwin : MonoBehaviour
     int Level1TextIndex = 0;
     int Level2TextIndex = 0;
     int Level3TextIndex = 0;
+    string[] Level3bText;
+    int Level3bTextIndex = 0;
 
     public GameObject target;
     int gameState = 0;
@@ -32,7 +34,26 @@ public class Godwin : MonoBehaviour
 
             };
 
+        Level3bText = new string[]
+        {
+            "This is definitely a job for you Mark.  Go handle this.  Ill keep Vanessa safe with me."
+           
+        };
+        
+
     }
+
+    public string getLevel3bText()
+    {
+        if (Level3bTextIndex >= Level3bText.Length)
+            Level3bTextIndex = 0;
+
+        GameEngine.gameState = 50;
+
+        return Level3bText[Level3bTextIndex++];
+
+    }
+
     public string getLevel3Text()
     {
         if (Level3TextIndex >= Level3Text.Length)

@@ -45,7 +45,6 @@ public class AlienMark : MonoBehaviour
             //if (GameEngine.camIndex == 0)
 
             float timeDilation = Time.deltaTime * 100;
-            //  Debug.Log(timeDilation);
 
             if (timeDilation > .4f)
                 timeDilation = .4f;
@@ -60,12 +59,6 @@ public class AlienMark : MonoBehaviour
             {
                 rb.linearVelocity = new Vector3(moveValue.y * speed * timeDilation, 0, -moveValue.x * speed * timeDilation);
             }
-            //  else if (GameEngine.camIndex == 1)
-            // rb.linearVelocity = new Vector3(-moveValue.x * speed * Time.deltaTime * 100, 0, -moveValue.y * speed * Time.deltaTime * 100);
-
-            // transform.rotation = Quaternion.Euler(0, angle, 0);
-
-            //  transform.position += transform.forward * Time.deltaTime * 3.0f;
 
         }
         else

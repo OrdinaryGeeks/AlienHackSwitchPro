@@ -20,23 +20,32 @@ public class CameraFollow : MonoBehaviour
 
         if ((camState == 1))
         {
-            if (GameEngine.camFacingIndex == 1)
+            if (GameEngine.gameState != 40)
             {
-                transform.position = player.transform.position + (player.transform.up * 5.2f) + (Vector3.forward * -3.0f);
-                transform.LookAt(player.transform.position);
+                if (GameEngine.camFacingIndex == 1)
+                {
+                    transform.position = player.transform.position + (player.transform.up * 5.2f) + (Vector3.forward * -3.0f);
+                    transform.LookAt(player.transform.position);
 
-  
-            }
-            else if (GameEngine.camFacingIndex == 0)
-            {
-                transform.position = player.transform.position + (player.transform.up * 5.2f) - (Vector3.forward * -3.0f);
-                transform.LookAt(player.transform.position);
-            }
-            else if ( (GameEngine.camFacingIndex == 2))
-            {
-                transform.position = player.transform.position + (player.transform.up * 5.2f) + (Vector3.right * -3.0f);
-                transform.LookAt(player.transform.position);
 
+                }
+                else if (GameEngine.camFacingIndex == 0)
+                {
+                    transform.position = player.transform.position + (player.transform.up * 5.2f) - (Vector3.forward * -3.0f);
+                    transform.LookAt(player.transform.position);
+                }
+                else if ((GameEngine.camFacingIndex == 2))
+                {
+                    transform.position = player.transform.position + (player.transform.up * 5.2f) + (Vector3.right * -3.0f);
+                    transform.LookAt(player.transform.position);
+
+                }
+            }
+            else
+            {
+
+                transform.position = player.transform.position + (player.transform.up * 10.2f) + (Vector3.forward * -3.0f);
+                transform.LookAt(player.transform.position);
             }
 
         }

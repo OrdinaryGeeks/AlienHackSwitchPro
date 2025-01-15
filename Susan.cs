@@ -35,7 +35,7 @@ public class Susan : MonoBehaviour
             "Are you interested in being a customer. Our office is right down the street at 110 Front St",
 
             "Oh you talked to Jason.  He is a great guy. Did he mention the new update",
-            "Jason is our key programmer.  He has been on edge lately due to the new guy",
+            "Jason is our key programmer.  He has been on edge lately due to the new girl",
             "Steve is our CEO.  He is a great mind.  He likes to take days off without telling anyone though",
               "The new lady is a child prodigy.  Her name is Vanessa.  If you get a chance talk to her!"
 

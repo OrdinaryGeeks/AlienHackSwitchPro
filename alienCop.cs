@@ -43,7 +43,6 @@ public class alienCop : MonoBehaviour
     {
 
 
-        Debug.Log("Register Hit");
 
         if (other.TryGetComponent<Grip>(out Grip grip))
         {
@@ -59,7 +58,6 @@ public class alienCop : MonoBehaviour
      
             if (other.CompareTag("PlayerWeapon"))
             {
-                Debug.Log("Enemy hit");
            
                 {
                    health -= 10;

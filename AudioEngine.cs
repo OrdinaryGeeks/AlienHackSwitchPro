@@ -20,7 +20,6 @@ public class AudioEngine : MonoBehaviour
 
     public static void PlayALaserBeamSound()
     {
-        Debug.Log("Play a laser beam sound");
        if (!playLaserBeam1)
             playLaserBeam1 = true;
         else if (!playLaserBeam2)

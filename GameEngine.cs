@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameEngine : MonoBehaviour
 {
+    public GameObject Alpha1, Alpha2, Alpha3, GodwinBattle;
     public GameObject VanessaStreet;
     public GameObject Finch;
     public GameObject Robot;
@@ -68,6 +69,10 @@ public class GameEngine : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Finch.SetActive(false);
+        Alpha1.SetActive(false);
+        Alpha2.SetActive(false);
+        Alpha3.SetActive(false);
         beenArrested = false;
         vanessaOurFriend = false;
         jasonAptLoc.SetActive(false);
@@ -138,7 +143,6 @@ public class GameEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gameState);
         if(jasonAptLocGiven)
             jasonAptLoc.SetActive(true);
         else
@@ -192,15 +196,20 @@ public class GameEngine : MonoBehaviour
         }
 
         if (Grip.GetComponent<Grip>().health <= 0)
-            overviewText.text = "Game Over";
+        {
+            overviewText.text = "You died but you need to finish so here is a health refill";
+            Grip.GetComponent<Grip>().health = 100;
+        }
 
         if (mapIndex == 0)
         {
             Ray ray = WorldCam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            int distance = 100;
 
-            Physics.Raycast(ray, out hit, 100, ~boundaryLayerMask );
-
+            if (gameState == 40)
+                distance = 300;
+            Physics.Raycast(ray, out hit, distance, ~boundaryLayerMask );
             Vector3 TurnToFace = Grip.transform.position - hit.point;
 
             float angle = Mathf.Atan2(TurnToFace.x, TurnToFace.z) * Mathf.Rad2Deg;
@@ -325,9 +334,13 @@ public class GameEngine : MonoBehaviour
                             {
                                 overviewText.text = Godwin.GetComponent<Godwin>().getLevel2Text();
                             }
-                            else if(gameState == 37)
+                            else if(gameState == 37 )
                             {
                                 overviewText.text = Godwin.GetComponent<Godwin>().getLevel3Text();
+                            }
+                        else if((gameState == 27))
+                            {
+                                overviewText.text = Godwin.GetComponent<Godwin>().getLevel3bText();
                             }
                         }
                     }
@@ -368,28 +381,32 @@ public class GameEngine : MonoBehaviour
         {
             overviewText.text = "To save the world, I have to go back in time 100 years to 2025 and stop the singularity on Earth.  That is as far as I have been able to track his movements. Press Enter";
             gameState = 2;
-            gameState = 33;
+          //  gameState = 40;
 
            // gameState = 11;
-            bigMobileLocGiven = true;
+          /*  bigMobileLocGiven = true;
             brainNetLocGiven = true;
             jasonAptLocGiven = true;
             vanessaAptLocGiven = true;
+            vanessaOurFriend = true;
+            vanessaOurFriendx2 = true;
+            godwinOurFriend = true;
+            VanessaStreet.GetComponent<VanessaStreet>().target = Grip;
             //gameState = 20;
           // bigMobileLocGiven = true;
             //jasonAptLocGiven = true;
 
-            RadarGO.GetComponent<Radar>().Player = Mark;
-            WorldCam.GetComponent<CameraFollow>().player = Mark;
-            overviewText.text = "You show up and now I am registering all this activity.  I hope that is waht you are investigating.  Here is your identity back";
+            RadarGO.GetComponent<Radar>().Player = Grip;
+            WorldCam.GetComponent<CameraFollow>().player = Grip;
+           // overviewText.text = "You show up and now I am registering all this activity.  I hope that is waht you are investigating.  Here is your identity back";
            // gameState = 20;
-            alienState = 1;
-            Mark.transform.position = Grip.transform.position;
-            Mark.transform.rotation = Grip.transform.rotation;
-            Mark.SetActive(true);
-            Grip.GetComponent<Grip>().health = 100;
-            Grip.SetActive(false);
-
+            alienState = 0;
+          //  Mark.transform.position = Grip.transform.position;
+           // Mark.transform.rotation = Grip.transform.rotation;
+            //Mark.SetActive(true);
+            Grip.transform.position = brainNetInteriorLoc.transform.position;
+           // Grip.SetActive(false);
+          */
             
 
 
@@ -402,15 +419,16 @@ public class GameEngine : MonoBehaviour
             WorldCam.GetComponent<CameraFollow>().camState = 1;
             Light.SetActive(true);
         }
-        else if (Enter.triggered && gameState == 2)
+       // else if (Enter.triggered && gameState == 2)
+       if(gameState ==2)
         {
-            overviewText.text = "I sent my gear in the jump before me but Finch tried to intercept it.  It is no telling where my gear is.";
+            overviewText.text = "Need to find the hacker and get some help. Press Enter";
             gameState = 3;
         }
         else if (Enter.triggered && gameState == 3)
         {
             WorldCam.GetComponent<CameraFollow>().camState = 1;
-            overviewText.text = "Ah I have arrived.  Memphis, Tn in the year 2025.  Let me go over my gear now";
+            overviewText.text = "Ah I have arrived.  Memphis, Tn in the year 2025.  Let me go over my gear now.  Press O to see the controls";
 
             //  Grip.GetComponent<Grip>().isGhost = true;
             env1.SetActive(true);
@@ -420,14 +438,15 @@ public class GameEngine : MonoBehaviour
             env5.SetActive(true);
             gameState = 4;
         }
-        else if (Enter.triggered && gameState == 4)
+        else if (Controls.triggered && gameState == 4)
         {
             Light.SetActive(true);
-            overviewText.text = "First, the most important thing.  I have entered Flow State. Right now time is slowed down significantly.  This is where timewalkers dwell.  You can be pulled into this dimension by other timewalkers.  I have my credentials but the local timeCops are probably already headed here. Let me get a scouting advantage";
-
+            overviewText.text = "Finch's army of crooked time cops will arrive shortly.  I need to find the local time sheriff; Press Enter";
+            gameState = 5;
+            gameStateTime = 0;
 
         }
-        else if (gameState == 4)
+       /* else if (Enter.triggered && gameState == 99)
         {
 
             gameStateTime += Time.deltaTime;
@@ -436,8 +455,8 @@ public class GameEngine : MonoBehaviour
                 gameState = 5;
                 overviewText.text = "Did you hear that";
             }
-        }
-        else if (gameState == 5)
+        }*/
+        else if (Enter.triggered && gameState == 5)
         {
 
             overviewText.text = "Hey I just got a ping on my watch.  My gear may have just come.  <Press M for map view now>";
@@ -448,10 +467,10 @@ public class GameEngine : MonoBehaviour
         else if (gameState == 6 && Map.triggered)
         {
 
-            overviewText.text = "You are the yellow square. Red squares are places of interest. <Press M for world view now>";
+            overviewText.text = "You are the yellow square. Red squares need to be investigated. <Press M for world view now>";
             gameState = 7;
         }
-        else if (gameState == 7)
+        else if (gameState == 7 && Map.triggered)
         {
             overviewText.text = "";
             gameState = 8;
@@ -460,14 +479,14 @@ public class GameEngine : MonoBehaviour
         {
             if (Vector3.Distance(Grip.transform.position, Faldor.transform.position) < 5)
             {
-                overviewText.text = "Oh its not gear its a timeCop.  Sir I can explain here are my credentials. <I wont tell him why I'm really here yet. He may be the problem>";
+                overviewText.text = "Oh its not gear its one of Finch's cronies.";
                 gameState = 9;
             }
         }
         else if (gameState == 9)
         {
 
-            overviewText.text = "Screw your credentials. Prepare to die!";
+            overviewText.text = "Did you think we'd let you escape Grip?";
             gameState = 10;
             Faldor.GetComponent<alienCop>().gameState = 1;
 
@@ -479,6 +498,7 @@ public class GameEngine : MonoBehaviour
         }
         else if (gameState == 11)
         {
+            overviewText.text = "Find the blue icon and interact with your right mouse button";
             //if (Vector3.Distance(Grip.transform.position, Godwin.transform.position) < 5)
             {
 
@@ -493,7 +513,7 @@ public class GameEngine : MonoBehaviour
                 Susan.GetComponent<Susan>().setLevel1b(bigMobileLoc.transform.position);
                 Jason.GetComponent<Jason>().setLevel1b(bigMobileLoc.transform.position);
                 Steve.GetComponent<Steve>().setLevel1b(bigMobileLoc.transform.position);
-                overviewText.text = "Follow Jason or Susan or Steve to bigMobile";
+                overviewText.text = "Follow Jason or Susan or Steve to bigMobile.  Doors show up as green on the map view and radar";
                 gameState = 13;
             }
 
@@ -508,6 +528,8 @@ public class GameEngine : MonoBehaviour
                 overviewText.text = "Press g to go inside";
 
             }
+            else
+                overviewText.text = "Get closer to the sign and press g";
 
             if (inBigMobileInt)
             {
@@ -524,14 +546,14 @@ public class GameEngine : MonoBehaviour
             }
 
         }
-        else if (gameState == 15)
+        else if (gameState == 15 && Enter.triggered)
         {
 
             Alpha.SetActive(true);
             Epsilon.SetActive(true);
             Beta.SetActive(true);
 
-
+            overviewText.text = "Time cops can pull you out of reality and remove your disguise";
             gameState = 16;
         }
         else if (gameState == 16)
@@ -555,7 +577,7 @@ public class GameEngine : MonoBehaviour
             if ((Alpha.GetComponent<alienCop>().health <= 0 && Epsilon.GetComponent<alienCop>().health <= 0
                 && Beta.GetComponent<alienCop>().health <= 0))
             {
-                overviewText.text = "I must be getting close.  These guys must work for Finch";
+                overviewText.text = "I must be getting close.  These guys must work for Finch. I need to check back in with Godwin";
                 VanessaBM.SetActive(true);
                 gameState = 18;
             }
@@ -576,13 +598,14 @@ public class GameEngine : MonoBehaviour
 
             if (inJasonApt && gameState == 20)
             {
-                overviewText.text = "Freeze in the name of the law.  We knew someone was up to no good. Prepare to go to jail";
+                //  overviewText.text = "Freeze in the name of the law.  We knew someone was up to no good. Prepare to go to jail";
+                overviewText.text = "Jason appears to be dead. He can't be the hacker";
                 gameState = 21;
                 gameStateTime = 0;
             }
             else if (inJasonApt && gameState == 24)
             {
-                overviewText.text = "Freeze cop.  Halt your investigation.  This guy works for me. Oh My God Jason!!!";
+                overviewText.text = "Freeze cop.  Halt your investigation.  This guy works for me. Oh My God Jason!!!  He's dead.";
                 gameState = 25;
                 gameStateTime = 0;
             }
@@ -642,7 +665,7 @@ public class GameEngine : MonoBehaviour
 
         else if (gameState == 21)
         {
-            gameStateTime += Time.deltaTime;
+       /*     gameStateTime += Time.deltaTime;
 
             if (gameStateTime >= 10)
             {
@@ -652,6 +675,7 @@ public class GameEngine : MonoBehaviour
 
                 Mark.transform.position = jailLoc.transform.position;
             }
+       */
 
         }
         else if (gameState == 22)
@@ -659,7 +683,8 @@ public class GameEngine : MonoBehaviour
             gameStateTime = 0;
 
             beenArrested = true;
-            overviewText.text = "I have replaced that body with an AI and brought you back to this timeline.  You will need to be careful with that identity now.  I wonder how they knew who to look for?";
+            // overviewText.text = "I have replaced that body with an AI and brought you back to this timeline.  You will need to be careful with that identity now.  I wonder how they knew who to look for?";
+            overviewText.text = "What do you have to report.  Jason dead? Then the hacker is Vanessa or works for brain net";
             Mark.transform.position = GodwinSave.transform.position;
             gameState = 23;
         }
@@ -718,12 +743,13 @@ public class GameEngine : MonoBehaviour
         {
             if (inJasonApt)
             {
-                overviewText.text = "Freeze cop.  Halt your investigation.  This guy works for me. Oh My God Jason!!!";
-                gameState = 36;
+                overviewText.text = "Freeze cop.  Halt your investigation.  This guy works for me. Oh My God Jason!!! Jason's dead! It's brain Net I know it.";
+                //gameState = 36;
+                gameState = 37;
                 gameStateTime = 0;
             }
         }
-        else if (gameState == 36)
+      /*  else if (gameState == 36)
 
         {
             overviewText.text = "Avoid the x500 while Vanessa hacks into its mainframe.";
@@ -737,6 +763,7 @@ public class GameEngine : MonoBehaviour
 
 
         }
+      */
             else if (gameState == 38)
         {
             if (alienState == 1)
@@ -762,16 +789,47 @@ public class GameEngine : MonoBehaviour
             gameStateTime += Time.deltaTime;
             if (gameStateTime > 4)
             {
-                overviewText.text = "You're ALIENS!! I am so freaked out right now";
-                Grip.SetActive(true);
-                Grip.transform.position = Mark.transform.position;
-                Grip.transform.rotation = Mark.transform.rotation;
-                RadarGO.GetComponent<Radar>().Player = Grip;
-                WorldCam.GetComponent<CameraFollow>().player = Grip;
-                Mark.SetActive(false);
-                alienState = 0;
+               // overviewText.text = "You're ALIENS!! I am so freaked out right now.  I hear his backup coming. Come on Godwin, lets handle it.";
+                gameState = 41;
+                Finch.SetActive(true);
+                GodwinBattle.SetActive(true);
+                Alpha1.SetActive(true);
+                Alpha2.SetActive(true);
+                Alpha3.SetActive(true);
+                Alpha1.GetComponent<alienCop>().gameState = 1;
+                Alpha2.GetComponent<alienCop>().gameState = 1;
+                Alpha3.GetComponent<alienCop>().gameState = 1;
+                /*   Grip.SetActive(true);
+                   Grip.transform.position = Mark.transform.position;
+                   Grip.transform.rotation = Mark.transform.rotation;
+                   RadarGO.GetComponent<Radar>().Player = Grip;
+                   WorldCam.GetComponent<CameraFollow>().player = Grip;
+                   Mark.SetActive(false);
+                   alienState = 0;*/
             }
 
+        }
+            else if(gameState == 41)
+        {
+            if (Finch.GetComponent<Finch>().health <= 0)
+                overviewText.text = "You win the easy way. Congratulations.";
+        }
+
+            else if(gameState == 50)
+        {
+
+            if ((inBrainNet))
+            {
+                overviewText.text = "Grip old friend. Nice of you to come here.  My backup is here and yours isn't. Prepare to die.";
+                gameState = 40;
+                gameStateTime = 0;
+                Alpha1.SetActive(true);
+                Alpha2.SetActive(true);
+                Alpha3.SetActive(true);
+                Alpha1.GetComponent<alienCop>().gameState = 1;
+                Alpha2.GetComponent<alienCop>().gameState = 1;
+                Alpha3.GetComponent<alienCop>().gameState = 1;
+            }
         }
         else if (gameState == 41 )
         {
@@ -810,7 +868,7 @@ public class GameEngine : MonoBehaviour
 
         if (alienState == 0)
         {
-            //Debug.Log(Vector3.Distance(Grip.transform.position, sandysApartmentsLoc.transform.position));
+           
             if (Vector3.Distance(Grip.transform.position, sandysApartmentsLoc.transform.position) < 3 && Go.triggered)
             {
                 Grip.transform.position = vanessaAptInteriorLoc.transform.position;
@@ -856,7 +914,6 @@ public class GameEngine : MonoBehaviour
 
         if (alienState == 1)
         {
-            //Debug.Log(Vector3.Distance(Grip.transform.position, sandysApartmentsLoc.transform.position));
             if (Vector3.Distance(Mark.transform.position, sandysApartmentsLoc.transform.position) < 3 && Go.triggered)
             {
                 Mark.transform.position = vanessaAptInteriorLoc.transform.position;
@@ -886,7 +943,9 @@ public class GameEngine : MonoBehaviour
         }
         if (alienState == 1)
         {
-            if (Vector3.Distance(Mark.transform.position, brainNetLoc.transform.position) < 3 && Go.triggered)
+
+            if(gameState>20)
+            { if (  Vector3.Distance(Mark.transform.position, brainNetLoc.transform.position) < 3 && Go.triggered)
             {
                 Mark.transform.position = brainNetInteriorLoc.transform.position;
                 inBrainNet = true;
@@ -899,6 +958,11 @@ public class GameEngine : MonoBehaviour
                 Mark.transform.position = brainNetInteriorLoc.transform.position;
                 inBrainNet = false;
             }
+        }
+
+        else
+            overviewText.text = "It is too soon to visit brain net";
+
         }
         #endregion
         if (gameState >= 12 && gameState!= 15 && gameState != 11)
